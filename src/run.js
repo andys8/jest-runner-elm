@@ -9,8 +9,8 @@ module.exports = ({ testPath, config, globalConfig }) => {
     config.throat = throat;
   }
 
-  return config.throat(() => {
-    return exec('./node_modules/.bin/elm-test ' + testPath)
+  return config.throat(() =>
+    exec('./node_modules/.bin/elm-test ' + testPath)
       .then(() => Promise.resolve(
         pass({
           start,
@@ -30,7 +30,7 @@ module.exports = ({ testPath, config, globalConfig }) => {
               errorMessage: result.stderr ? result.stderr : result.stdout
             }
           }))
-      );
-  });
+      )
+  );
 
 };

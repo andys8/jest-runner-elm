@@ -1,9 +1,7 @@
 module TestsFailing exposing (..)
 
-import Char
 import Example
 import Expect
-import Fuzz exposing (..)
 import String
 import Test exposing (..)
 
