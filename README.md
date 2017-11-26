@@ -13,17 +13,50 @@ The expected result is that the tests are executed using `elm-test`. One file is
 The first run triggers download and installation of files and can potentially fail. Try executing multiple times.
 
 ```sh
+➜  jest-runner-elm git:(master) ✗ npm test
+
+> jest-runner-elm@0.0.0-development test /repository/jest-runner-elm
+> jest -c jest-elm.config.js
+
+ PASS   test:elm  src/example/tests/TestsPassing.elm
+  ✓  (3404ms)
+
+ FAIL   test:elm  src/example/tests/TestsFailing.elm
+  ✕  (3931ms)
+
+Success! Compiled 0 modules.
+Successfully generated /dev/null
+Success! Compiled 1 module.
+Successfully generated /repository/jest-runner-elm/elm-stuff/generated-code/elm-community/elm-test/elmTestOutput.js
+
+elm-test 0.18.10
+----------------
+
+Running 1 test. To reproduce these results, run: elm-test --fuzz 100 --seed 1620139978 /repository/jest-runner-elm/src/example/tests/TestsFailing.elm
+
+↓ TestsFailing
+✗ the ultimate answer is 41
+
+    42
+    ╷
+    │ Expect.equal
+    ╵
+    41
+
+
+
 TEST RUN FAILED
 
-Duration: 2047 ms
+Duration: 310 ms
 Passed:   0
-Failed:   9
-Todo:     3
+Failed:   1
 
 
 Test Suites: 1 failed, 1 passed, 2 total
 Tests:       1 failed, 1 passed, 2 total
 Snapshots:   0 total
-Time:        6.02s
+Time:        4.209s
 Ran all test suites.
+npm ERR! Test failed.  See above for more details.
+
 ```
