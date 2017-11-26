@@ -1,34 +1,36 @@
-const chalk = require("chalk");
-const { highlight } = require("cli-highlight");
 const { pass, fail } = require("create-jest-runner");
-const fs = require("fs");
-const diff = require("jest-diff");
-const prettier = require("prettier");
+const exec = require('child-process-promise').exec;
+const throat = require('throat')(1);
 
 module.exports = ({ testPath, config, globalConfig }) => {
   const start = new Date();
-  const contents = fs.readFileSync(testPath, "utf8");
 
-  const isPretty = prettier.check(contents, { filepath: testPath });
-
-  if (isPretty) {
-    return pass({
-      start,
-      end: new Date(),
-      test: { path: testPath }
-    });
+  if (!config.throat) {
+    config.throat = throat;
   }
 
-  const formatted = prettier.format(contents, { filepath: testPath });
-
-  return fail({
-    start,
-    end: new Date(),
-    test: {
-      path: testPath,
-      errorMessage: diff(highlight(formatted), highlight(contents), {
-        expand: false
-      })
-    }
+  return config.throat(() => {
+    return exec('./node_modules/.bin/elm-test ' + testPath)
+      .then(() => Promise.resolve(
+        pass({
+          start,
+          end: new Date(),
+          test: {
+            path: testPath
+          }
+        }))
+      )
+      .catch((result) =>
+        Promise.resolve(
+          fail({
+            start,
+            end: new Date(),
+            test: {
+              path: testPath,
+              errorMessage: result.stderr ? result.stderr : result.stdout
+            }
+          }))
+      );
   });
+
 };
